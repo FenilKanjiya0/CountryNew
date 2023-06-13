@@ -65,6 +65,7 @@ const Listing = () => {
             role="switch"
             onChange={(e) => setChecked(e.target.checked)}
           />
+          
           <input
             type="text"
             value={coustomName}
@@ -84,7 +85,7 @@ const Listing = () => {
       <div className="container">
         <h1 className="mb-5">Country Data</h1>
         {searchItem}
-        <button className="btn btn-warning" onClick={handleReset}>Reset</button>
+        <button className="btn btn-warning mb-5" onClick={handleReset}>Reset</button>
         {error && <h2>{error}</h2>}
         {!error ? (
           loading ? (
