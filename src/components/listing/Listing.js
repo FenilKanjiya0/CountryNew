@@ -2,15 +2,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Table from "../table/Table";
 
-const APIDATA = process.env.REACT_APP_API_KEY;
-
 const Listing = () => {
   const [allData, setAllData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   // Form State
-  const [coustomName, setCoustomName] = useState("");
+  const [customName, setCustomName] = useState("");
   const [checked, setChecked] = useState(false);
 
   // Call all data's api function
@@ -22,27 +20,27 @@ const Listing = () => {
   const countryData = async () => {
     try {
       setLoading(true);
-      const res = await axios.get(`${APIDATA}/all`);
+      const res = await axios.get(`${process.env.REACT_APP_API_KEY}/all`);
       setAllData(res.data);
       setLoading(false);
-    } catch (err) {
+      setError(null);
+    } catch (_) {
       setError("Something went wrong, Could not fatch data");
       setLoading(false);
     }
   };
 
   // Country Search Query
-  const handleSearch = async (e) => {
-    e.preventDefault();
+  const handleSearch = async () => {
     try {
       setLoading(true);
       setError(null);
       const res = await axios.get(
-        `${APIDATA}/name/${coustomName}?fullText=${checked}`
+        `${process.env.REACT_APP_API_KEY}/name/${customName}?fullText=${checked}`
       );
       setAllData(res.data);
       setLoading(false);
-    } catch (err) {
+    } catch (_) {
       setError("Sorry!! This country dose not exist");
       setLoading(false);
     }
@@ -51,7 +49,7 @@ const Listing = () => {
   // Reset Button Query
   const handleReset = () => {
     countryData();
-    setCoustomName("");
+    setCustomName("");
   };
 
   // Form Component Function
@@ -66,9 +64,9 @@ const Listing = () => {
         />
         <input
           type="text"
-          value={coustomName}
+          value={customName}
           placeholder="Enter Country Name"
-          onChange={(e) => setCoustomName(e.target.value)}
+          onChange={(e) => setCustomName(e.target.value)}
         />
         <button className="btn btn-primary" onClick={handleSearch}>
           Search
