@@ -25,7 +25,6 @@ const Listing = () => {
       const res = await axios.get(`${APIDATA}/all`);
       setAllData(res.data);
       setLoading(false);
-      setError(null);
     } catch (err) {
       setError("Something went wrong, Could not fatch data");
       setLoading(false);
@@ -43,7 +42,6 @@ const Listing = () => {
       );
       setAllData(res.data);
       setLoading(false);
-      setError(null);
     } catch (err) {
       setError("Sorry!! This country dose not exist");
       setLoading(false);
@@ -59,26 +57,23 @@ const Listing = () => {
   // Form Component Function
   const searchItem = (
     <div className="m-5">
-      <form onSubmit={handleSearch}>
-        <div className="form-check form-switch">
-          <input
-            className="form-check-input form-switch"
-            type="checkbox"
-            role="switch"
-            onChange={(e) => setChecked(e.target.checked)}
-          />
-
-          <input
-            type="text"
-            value={coustomName}
-            placeholder="Enter CountryName"
-            onChange={(e) => setCoustomName(e.target.value)}
-          />
-          <button className="btn btn-primary" type="submit ">
-            Search
-          </button>
-        </div>
-      </form>
+      <div className="form-check form-switch">
+        <input
+          className="form-check-input form-switch"
+          type="checkbox"
+          role="switch"
+          onChange={(e) => setChecked(e.target.checked)}
+        />
+        <input
+          type="text"
+          value={coustomName}
+          placeholder="Enter Country Name"
+          onChange={(e) => setCoustomName(e.target.value)}
+        />
+        <button className="btn btn-primary" onClick={handleSearch}>
+          Search
+        </button>
+      </div>
     </div>
   );
 

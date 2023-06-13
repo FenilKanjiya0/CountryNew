@@ -13,11 +13,9 @@ const Table = (props) => {
   const getDetails = async (detailsName) => {
     try {
       setLoading(true);
-      setError(null);
       const res = await axios.get(`${APIDETAILS}/alpha/${detailsName}`);
       setViewData(res.data);
       setLoading(false);
-      setError(null);
     } catch (err) {
       setError("Something went wrong");
       setLoading(false);

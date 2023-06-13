@@ -15,7 +15,7 @@ const Details = ({ data }) => {
               </div>
               <div className="col-7 text-start">
                 <h6>
-                  Name : {val.name.common}{" "}
+                  Name : {val.name.common}
                   <span style={{ color: "#625d5d" }}>
                     ({val.name.official})
                   </span>
