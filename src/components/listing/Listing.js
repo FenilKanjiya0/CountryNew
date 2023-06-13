@@ -9,13 +9,16 @@ const Listing = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  // Form State
   const [coustomName, setCoustomName] = useState("");
   const [checked, setChecked] = useState(false);
 
+  // Call all data's api function
   useEffect(() => {
     countryData();
   }, []);
 
+  // listing all data function
   const countryData = async () => {
     try {
       setLoading(true);
@@ -29,6 +32,7 @@ const Listing = () => {
     }
   };
 
+  // Country Search Query
   const handleSearch = async (e) => {
     e.preventDefault();
     try {
@@ -46,11 +50,13 @@ const Listing = () => {
     }
   };
 
+  // Reset Button Query
   const handleReset = () => {
     countryData();
     setCoustomName("");
   };
 
+  // Form Component Function
   const searchItem = (
     <div className="m-5">
       <form onSubmit={handleSearch}>
