@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Table from "../table/Table";
 
-const APIDATA = "https://restcountries.com/v3.1/all";
+const APIDATA = process.env.REACT_APP_API_KEY;
 
 const Listing = () => {
   const [allData, setAllData] = useState([]);
@@ -19,11 +19,10 @@ const Listing = () => {
   const countryData = async () => {
     try {
       setLoading(true);
-      const res = await axios.get(APIDATA)
-        setAllData(res.data);
-        setLoading(false);
-        setError(null);
-      ;
+      const res = await axios.get(`${APIDATA}/all`);
+      setAllData(res.data);
+      setLoading(false);
+      setError(null);
     } catch (err) {
       setError("Something went wrong, Could not fatch data");
       setLoading(false);
@@ -36,7 +35,7 @@ const Listing = () => {
       setLoading(true);
       setError(null);
       const res = await axios.get(
-        `https://restcountries.com/v3.1/name/${coustomName}?fullText=${checked}`
+        `${APIDATA}/name/${coustomName}?fullText=${checked}`
       );
       setAllData(res.data);
       setLoading(false);
