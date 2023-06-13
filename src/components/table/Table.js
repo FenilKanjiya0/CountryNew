@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import axios from "axios";
 import Details from "./Details";
 
-const APIDETAILS = process.env.REACT_APP_API_KEY;
-
 const Table = (props) => {
   const [viewData, setViewData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -13,10 +11,12 @@ const Table = (props) => {
   const getDetails = async (detailsName) => {
     try {
       setLoading(true);
-      const res = await axios.get(`${APIDETAILS}/alpha/${detailsName}`);
+      const res = await axios.get(
+        `${process.env.REACT_APP_API_KEY}/alpha/${detailsName}`
+      );
       setViewData(res.data);
       setLoading(false);
-    } catch (err) {
+    } catch (_) {
       setError("Something went wrong");
       setLoading(false);
     }
@@ -44,11 +44,7 @@ const Table = (props) => {
             {loading ? <h5>Loading...</h5> : <Details data={viewData} />}
           </div>
           <div className="modal-footer">
-            <button
-              type="button"
-              className="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
+            <button className="btn btn-secondary" data-bs-dismiss="modal">
               Close
             </button>
           </div>
@@ -73,32 +69,30 @@ const Table = (props) => {
           </thead>
           {props?.data?.map((val, index) => {
             return (
-              <React.Fragment key={index}>
-                <tbody>
-                  <tr>
-                    <th scope="row">{index + 1}</th>
-                    <td>
-                      <img
-                        src={val.flags.png}
-                        style={{ width: "50px", height: "30px" }}
-                      />
-                    </td>
-                    <td>{val.name.common}</td>
-                    <td>{val.capital}</td>
-                    <td>{val.population}</td>
-                    <td>
-                      <button
-                        className="btn btn-success btn-sm"
-                        data-bs-toggle="modal"
-                        data-bs-target="#staticBackdrop"
-                        onClick={() => getDetails(val.ccn3)}
-                      >
-                        View
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </React.Fragment>
+              <tbody key={index}>
+                <tr>
+                  <th scope="row">{index + 1}</th>
+                  <td>
+                    <img
+                      src={val.flags.png}
+                      style={{ width: "50px", height: "30px" }}
+                    />
+                  </td>
+                  <td>{val.name.common}</td>
+                  <td>{val.capital}</td>
+                  <td>{val.population}</td>
+                  <td>
+                    <button
+                      className="btn btn-success btn-sm"
+                      data-bs-toggle="modal"
+                      data-bs-target="#staticBackdrop"
+                      onClick={() => getDetails(val.ccn3)}
+                    >
+                      View
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
             );
           })}
         </table>
