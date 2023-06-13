@@ -6,54 +6,51 @@ const APIDATA = "https://restcountries.com/v3.1/all";
 
 const Listing = () => {
   const [allData, setAllData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const [coustomName, setCoustomName] = useState("");
   const [checked, setChecked] = useState(false);
 
+  useEffect(() => {
+    countryData();
+  }, []);
+
   const countryData = async () => {
-    try{
-      await axios
-      .get(APIDATA)
-      .then((res) => {
+    try {
+      setLoading(true);
+      const res = await axios.get(APIDATA)
         setAllData(res.data);
         setLoading(false);
         setError(null);
-      })
-    } catch(err){
-      setError("Something went wrong, Could not fatch data")
+      ;
+    } catch (err) {
+      setError("Something went wrong, Could not fatch data");
+      setLoading(false);
     }
-    
   };
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    setLoading(true);
     try {
-      await axios
-        .get(
-          `https://restcountries.com/v3.1/name/${coustomName}?fullText=${checked}`
-        )
-        .then((res) => {
-          setAllData(res.data);
-          setLoading(false);
-          setError(null);
-        });
+      setLoading(true);
+      setError(null);
+      const res = await axios.get(
+        `https://restcountries.com/v3.1/name/${coustomName}?fullText=${checked}`
+      );
+      setAllData(res.data);
+      setLoading(false);
+      setError(null);
     } catch (err) {
-      console.log(err)
       setError("Sorry!! This country dose not exist");
+      setLoading(false);
     }
   };
 
   const handleReset = () => {
     countryData();
-    setCoustomName('');
-  }
-
-  useEffect(() => {
-    countryData();
-  }, []);
+    setCoustomName("");
+  };
 
   const searchItem = (
     <div className="m-5">
@@ -65,7 +62,7 @@ const Listing = () => {
             role="switch"
             onChange={(e) => setChecked(e.target.checked)}
           />
-          
+
           <input
             type="text"
             value={coustomName}
@@ -85,8 +82,10 @@ const Listing = () => {
       <div className="container">
         <h1 className="mb-5">Country Data</h1>
         {searchItem}
-        <button className="btn btn-warning mb-5" onClick={handleReset}>Reset</button>
-        {error && <h2>{error}</h2>}
+        <button className="btn btn-warning mb-5" onClick={handleReset}>
+          Reset
+        </button>
+        {error && !loading && <h2>{error}</h2>}
         {!error ? (
           loading ? (
             <h2>Loading....</h2>
