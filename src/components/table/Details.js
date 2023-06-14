@@ -1,9 +1,14 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { removeCountry } from "../../store/countrySlice";
 
-const Details = ({ data }) => {
+const Details = () => {
+  const details = useSelector((state) => state.country);
+  const dispach = useDispatch();
+
   return (
     <>
-      {data?.map((val, index) => {
+      {details?.map((val, index) => {
         return (
           <div className="row" key={index}>
             <div className="col-5">
@@ -21,6 +26,13 @@ const Details = ({ data }) => {
               <h6>Region: {val.region}</h6>
               <h6>Population : {val.population}</h6>
               <h6>TimeZone : {val.timezones}</h6>
+              <button
+                className="btn btn-secondary mt-4"
+                data-bs-dismiss="modal"
+                onClick={() => dispach(removeCountry(val.ccn3))}
+              >
+                Close
+              </button>
             </div>
           </div>
         );

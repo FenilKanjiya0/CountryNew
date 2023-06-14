@@ -1,26 +1,10 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React from "react";
 import Details from "./Details";
+import { useDispatch } from "react-redux";
+import { addCountry } from "../../store/countrySlice";
 
 const Table = (props) => {
-  const [viewData, setViewData] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  // details apicall
-  const getDetails = async (detailsName) => {
-    try {
-      setLoading(true);
-      const res = await axios.get(
-        `${process.env.REACT_APP_API_KEY}/alpha/${detailsName}`
-      );
-      setViewData(res.data);
-      setLoading(false);
-    } catch (_) {
-      setError("Something went wrong");
-      setLoading(false);
-    }
-  };
+  const dispach = useDispatch();
 
   // model box content
   const modelBox = (
@@ -40,13 +24,7 @@ const Table = (props) => {
             </h5>
           </div>
           <div className="modal-body">
-            {error && !loading && <h5>{error}</h5>}
-            {loading ? <h5>Loading...</h5> : <Details data={viewData} />}
-          </div>
-          <div className="modal-footer">
-            <button className="btn btn-secondary" data-bs-dismiss="modal">
-              Close
-            </button>
+            <Details />
           </div>
         </div>
       </div>
@@ -86,7 +64,7 @@ const Table = (props) => {
                       className="btn btn-success btn-sm"
                       data-bs-toggle="modal"
                       data-bs-target="#staticBackdrop"
-                      onClick={() => getDetails(val.ccn3)}
+                      onClick={() => dispach(addCountry(val))}
                     >
                       View
                     </button>
