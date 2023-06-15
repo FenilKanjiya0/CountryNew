@@ -3,6 +3,6 @@ import country from "./countrySlice";
 
 export const store = configureStore({
   reducer: {
-    country,
+    country: country,
   },
 });

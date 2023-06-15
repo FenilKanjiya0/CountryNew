@@ -1,19 +1,69 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
-const initialState = [];
+// read Actioin
+export const showCountry = createAsyncThunk(
+  "showCountry",
+  async (args, { rejectWithValue }) => {
+    try {
+      const responce = await axios.get(`${process.env.REACT_APP_API_KEY}/all`);
+      const values = responce.data;
+      return values;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+// search action
+
+export const searchCountry = createAsyncThunk(
+  "searchCountry",
+  async ({ customName, checked }, { rejectWithValue }) => {
+    try {
+      const responce = await axios.get(
+        `${process.env.REACT_APP_API_KEY}/name/${customName}?fullText=${checked}`
+      );
+      const values = responce.data;
+      return values;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
 
 export const countrySlice = createSlice({
   name: "country",
-  initialState,
-  reducers: {
-    addCountry(state, action) {
-      state.push(action.payload);
+  initialState: {
+    country: [],
+    loading: false,
+    error: false,
+  },
+  extraReducers: {
+    [showCountry.pending]: (state) => {
+      state.loading = true;
     },
-    removeCountry(state, action) {
-      state.pop(action.payload);
+    [showCountry.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.country = action.payload;
+    },
+    [showCountry.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    // search for country
+    [searchCountry.pending]: (state) => {
+      state.loading = true;
+    },
+    [searchCountry.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.country = action.payload;
+    },
+    [searchCountry.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
     },
   },
 });
 
-export const { addCountry, removeCountry } = countrySlice.actions;
 export default countrySlice.reducer;
