@@ -2,9 +2,9 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 const Details = ({ details }) => {
-  const country = useSelector((state) => state.country.country);
+  const country = useSelector((state) => state.country.country);  // get all countries
 
-  const singleDetails = country.filter((element) => element.ccn3 === details);
+  const singleDetails = country.filter((element) => element.ccn3 === details);  // filter by country
   return (
     <>
       <div className="row">

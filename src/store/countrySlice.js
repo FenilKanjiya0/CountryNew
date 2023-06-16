@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// read Actioin
+// read Action
 export const showCountry = createAsyncThunk(
   "showCountry",
   async (args, { rejectWithValue }) => {
@@ -15,7 +15,7 @@ export const showCountry = createAsyncThunk(
   }
 );
 
-// search action
+// search Action
 
 export const searchCountry = createAsyncThunk(
   "searchCountry",
@@ -40,6 +40,7 @@ export const countrySlice = createSlice({
     error: false,
   },
   extraReducers: {
+    // get all countries
     [showCountry.pending]: (state) => {
       state.loading = true;
     },

@@ -9,13 +9,19 @@ const Listing = () => {
   const dispach = useDispatch();
   const { country, loading, error } = useSelector((state) => state.country);
 
+
+  // dispach country list
   useEffect(() => {
     dispach(showCountry());
-  }, []);
+  },[]);
 
+
+  // reset country list
   const handleReset = () => {
     dispach(showCountry());
   };
+
+  //box models
   const modelBox = (
     <div
       className="modal fade modal-lg"
