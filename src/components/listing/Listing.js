@@ -5,8 +5,7 @@ import Details from "../Details";
 import Search from "../search/Search";
 
 const Listing = () => {
-  const [details, setDetails] = useState();
-  // const [view, setView] = useState('')
+  
   const dispach = useDispatch();
   const { country, loading, error } = useSelector((state) => state.country);
 
@@ -44,7 +43,7 @@ const Listing = () => {
             </h5>
           </div>
           <div className="modal-body">
-            <Details details={details} />
+            <Details/>
           </div>
         </div>
       </div>
