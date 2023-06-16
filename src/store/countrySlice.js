@@ -32,7 +32,24 @@ export const searchCountry = createAsyncThunk(
   }
 );
 
-export const countrySlice = createSlice({
+// view Action
+
+export const viewCountry = createAsyncThunk(
+  "viewCountry",
+  async ( ccn3, { rejectWithValue }) => {
+    try {
+      const responce = await axios.get(
+        `${process.env.REACT_APP_API_KEY}/alpha/${ccn3}`
+      );
+      const values = responce.data;
+      return values;
+    } catch (_) {
+      return rejectWithValue("This contury dose not exist");
+    }
+  }
+);
+
+const countrySlice = createSlice({
   name: "country",
   initialState: {
     country: [],
@@ -63,6 +80,20 @@ export const countrySlice = createSlice({
       state.country = action.payload;
     },
     [searchCountry.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    //view Country
+    [viewCountry.pending]: (state) => {
+      state.loading = true;
+    },
+    [viewCountry.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.error = false;
+      state.country = action.payload;
+    },
+    [viewCountry.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

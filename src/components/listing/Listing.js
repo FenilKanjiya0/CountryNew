@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { showCountry } from "../../store/countrySlice";
+import { showCountry, viewCountry } from "../../store/countrySlice";
 import Details from "../Details";
 import Search from "../search/Search";
 
 const Listing = () => {
   const [details, setDetails] = useState();
+  // const [view, setView] = useState('')
   const dispach = useDispatch();
   const { country, loading, error } = useSelector((state) => state.country);
 
@@ -20,6 +21,10 @@ const Listing = () => {
   const handleReset = () => {
     dispach(showCountry());
   };
+
+  const handleView = (ccn3) => {
+    dispach(viewCountry(ccn3))
+  }
 
   //box models
   const modelBox = (
@@ -93,7 +98,7 @@ const Listing = () => {
                           className="btn btn-success btn-sm"
                           data-bs-toggle="modal"
                           data-bs-target="#staticBackdrop"
-                          onClick={() => setDetails(val.ccn3)}
+                          onClick={() => handleView(val.ccn3)}
                         >
                           View
                         </button>
