@@ -9,8 +9,8 @@ export const showCountry = createAsyncThunk(
       const responce = await axios.get(`${process.env.REACT_APP_API_KEY}/all`);
       const values = responce.data;
       return values;
-    } catch (error) {
-      return rejectWithValue(error);
+    } catch (_) {
+      return rejectWithValue("something went wrong, could not fetch data");
     }
   }
 );
@@ -26,8 +26,8 @@ export const searchCountry = createAsyncThunk(
       );
       const values = responce.data;
       return values;
-    } catch (error) {
-      return rejectWithValue(error);
+    } catch (_) {
+      return rejectWithValue("Sorry! this country dose not exist");
     }
   }
 );
@@ -45,6 +45,7 @@ export const countrySlice = createSlice({
     },
     [showCountry.fulfilled]: (state, action) => {
       state.loading = false;
+      state.error = false;
       state.country = action.payload;
     },
     [showCountry.rejected]: (state, action) => {
@@ -57,6 +58,7 @@ export const countrySlice = createSlice({
     },
     [searchCountry.fulfilled]: (state, action) => {
       state.loading = false;
+      state.error = false;
       state.country = action.payload;
     },
     [searchCountry.rejected]: (state, action) => {

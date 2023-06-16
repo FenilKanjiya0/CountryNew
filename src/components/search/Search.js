@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { searchCountry } from "../../store/countrySlice";
 
@@ -10,7 +10,6 @@ const Search = () => {
 
   const handleSearch = () => {
     dispach(searchCountry({ customName, checked }));
-    dispach(searchCountry());
   };
 
   return (

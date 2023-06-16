@@ -7,12 +7,15 @@ import Search from "../search/Search";
 const Listing = () => {
   const [details, setDetails] = useState();
   const dispach = useDispatch();
-  const { country, loading } = useSelector((state) => state.country);
+  const { country, loading, error } = useSelector((state) => state.country);
 
   useEffect(() => {
     dispach(showCountry());
   }, []);
 
+  const handleReset = () => {
+    dispach(showCountry());
+  };
   const modelBox = (
     <div
       className="modal fade modal-lg"
@@ -37,58 +40,66 @@ const Listing = () => {
     </div>
   );
 
-  if (loading) {
-    return <h2>Loading.....</h2>;
-  }
-
   return (
     <>
       <h1 className="my-3">Country</h1>
       <Search />
 
-      <div className="container d-flex justify-content-center">
-        <table className="table table-bordered w-75">
-          <thead>
-            <tr>
-              <th scope="col">ID</th>
-              <th scope="col">Flage</th>
-              <th scope="col">Name</th>
-              <th scope="col">Capital</th>
-              <th scope="col">Population</th>
-              <th scope="col">Action</th>
-            </tr>
-          </thead>
-          {country?.map((val, index) => {
-            return (
-              <tbody key={index}>
+      <button className="btn btn-warning my-3" onClick={handleReset}>
+        Reset
+      </button>
+
+      {error && !loading && <h1>{error}</h1>}
+      {!error ? (
+        loading ? (
+          <h1>Loading ...</h1>
+        ) : (
+          <div className="container d-flex justify-content-center">
+            <table className="table table-bordered w-75">
+              <thead>
                 <tr>
-                  <th scope="row">{index + 1}</th>
-                  <td>
-                    <img
-                      alt="img"
-                      src={val.flags.png}
-                      style={{ width: "50px", height: "30px" }}
-                    />
-                  </td>
-                  <td>{val.name.common}</td>
-                  <td>{val.capital}</td>
-                  <td>{val.population}</td>
-                  <td>
-                    <button
-                      className="btn btn-success btn-sm"
-                      data-bs-toggle="modal"
-                      data-bs-target="#staticBackdrop"
-                      onClick={() => setDetails(val.ccn3)}
-                    >
-                      View
-                    </button>
-                  </td>
+                  <th scope="col">ID</th>
+                  <th scope="col">Flage</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Capital</th>
+                  <th scope="col">Population</th>
+                  <th scope="col">Action</th>
                 </tr>
-              </tbody>
-            );
-          })}
-        </table>
-      </div>
+              </thead>
+
+              {country?.map((val, index) => {
+                return (
+                  <tbody key={index}>
+                    <tr>
+                      <th scope="row">{index + 1}</th>
+                      <td>
+                        <img
+                          alt="img"
+                          src={val.flags.png}
+                          style={{ width: "50px", height: "30px" }}
+                        />
+                      </td>
+                      <td>{val.name.common}</td>
+                      <td>{val.capital}</td>
+                      <td>{val.population}</td>
+                      <td>
+                        <button
+                          className="btn btn-success btn-sm"
+                          data-bs-toggle="modal"
+                          data-bs-target="#staticBackdrop"
+                          onClick={() => setDetails(val.ccn3)}
+                        >
+                          View
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                );
+              })}
+            </table>
+          </div>
+        )
+      ) : null}
 
       {modelBox}
     </>
